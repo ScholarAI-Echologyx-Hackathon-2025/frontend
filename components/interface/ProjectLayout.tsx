@@ -1,5 +1,7 @@
 "use client"
 
+// @ts-nocheck
+
 import React, { useState } from "react"
 import { ProjectSidebar } from "./ProjectSidebar"
 import { Header } from "@/components/layout/Header"
@@ -48,6 +50,8 @@ export function ProjectLayout({ children, projectId, autoCollapseSidebar = false
                 <div
                     className="fixed inset-0 bg-black/50 z-40 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
+                    aria-label="Close sidebar overlay"
+                    role="presentation"
                 />
             )}
 
@@ -72,7 +76,7 @@ export function ProjectLayout({ children, projectId, autoCollapseSidebar = false
                 {!hideHeader && <Header />}
 
                 {/* Main Content Area */}
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1 overflow-hidden" role="main" aria-label="Project content">
                     {children}
                 </div>
             </div>

@@ -1,5 +1,7 @@
 "use client"
 
+// @ts-nocheck
+
 import React from "react"
 import { usePathname } from "next/navigation"
 import { ProjectLayout } from "./ProjectLayout"

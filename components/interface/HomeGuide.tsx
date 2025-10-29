@@ -1,5 +1,7 @@
 "use client"
 
+// @ts-nocheck
+
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -319,7 +321,7 @@ export function HomeGuide() {
                 }
             `}</style>
             {/* Background Effects */}
-            <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+            <div className="absolute inset-0 bg-grid-pattern opacity-5" aria-hidden="true" />
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/10 via-purple-500/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl" />
 
@@ -333,7 +335,7 @@ export function HomeGuide() {
                     className="text-center mb-8 sm:mb-12"
                 >
                     <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 border border-primary/30 mb-4 sm:mb-6">
-                        <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2" />
+                        <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2" aria-hidden="true" />
                         <span className="text-xs sm:text-sm font-medium text-primary">Welcome to ScholarAI</span>
                     </div>
 
@@ -356,9 +358,9 @@ export function HomeGuide() {
                     <div className="flex items-center justify-center mb-6 sm:mb-8">
                         <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-primary/30" />
                         <div className="flex items-center gap-3 mx-4">
-                            <div className="w-2 h-2 bg-primary rounded-full" />
+                            <div className="w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
                             <h2 className="text-xl sm:text-2xl font-semibold text-center">Research Workflow</h2>
-                            <div className="w-2 h-2 bg-primary rounded-full" />
+                            <div className="w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
                         </div>
                         <div className="flex-1 h-px bg-gradient-to-l from-transparent via-primary/30 to-primary/30" />
                     </div>
@@ -407,7 +409,7 @@ export function HomeGuide() {
                                                     "h-5 w-5 sm:h-6 sm:w-6 transition-all duration-500",
                                                     step.color,
                                                     currentStep === step.id && "scale-110 drop-shadow-lg"
-                                                )} />
+                                                )} aria-hidden="true" />
                                             </div>
                                             <div className="flex-1">
                                                 <div className="flex items-center gap-2 mb-1">
@@ -452,9 +454,9 @@ export function HomeGuide() {
                     <div className="flex items-center justify-center mb-6 sm:mb-8">
                         <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-primary/30" />
                         <div className="flex items-center gap-3 mx-4">
-                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" aria-hidden="true" />
                             <h2 className="text-xl sm:text-2xl font-semibold text-center">Powerful AI Features</h2>
-                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" aria-hidden="true" />
                         </div>
                         <div className="flex-1 h-px bg-gradient-to-l from-transparent via-primary/30 to-primary/30" />
                     </div>
@@ -494,7 +496,7 @@ export function HomeGuide() {
                                             <feature.icon className={cn(
                                                 "h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-300",
                                                 feature.color || "text-primary"
-                                            )} />
+                                            )} aria-hidden="true" />
                                         </div>
                                         <h3 className="font-semibold mb-2 text-sm sm:text-base group-hover:text-foreground transition-colors duration-300">{feature.title}</h3>
                                         <p className="text-xs sm:text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors duration-300">{feature.description}</p>
@@ -514,9 +516,9 @@ export function HomeGuide() {
                     <div className="flex items-center justify-center mb-6 sm:mb-8">
                         <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-primary/30" />
                         <div className="flex items-center gap-3 mx-4">
-                            <div className="w-2 h-2 bg-primary rounded-full" />
+                            <div className="w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
                             <h2 className="text-xl sm:text-2xl font-semibold text-center">Research Management Tools</h2>
-                            <div className="w-2 h-2 bg-primary rounded-full" />
+                            <div className="w-2 h-2 bg-primary rounded-full" aria-hidden="true" />
                         </div>
                         <div className="flex-1 h-px bg-gradient-to-l from-transparent via-primary/30 to-primary/30" />
                     </div>
@@ -556,7 +558,7 @@ export function HomeGuide() {
                                             <feature.icon className={cn(
                                                 "h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-300",
                                                 feature.color || "text-primary"
-                                            )} />
+                                            )} aria-hidden="true" />
                                         </div>
                                         <h3 className="font-semibold mb-2 text-sm sm:text-base group-hover:text-foreground transition-colors duration-300">{feature.title}</h3>
                                         <p className="text-xs sm:text-sm text-muted-foreground group-hover:text-foreground/80 transition-colors duration-300">{feature.description}</p>

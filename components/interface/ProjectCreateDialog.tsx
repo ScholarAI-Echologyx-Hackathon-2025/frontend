@@ -31,6 +31,9 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const { user } = useAuth()
+    // Accessible dialog labelling
+    const titleId = "create-project-title"
+    const descId = "create-project-desc"
 
     const {
         register,
@@ -120,12 +123,16 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
                     className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby={titleId}
+                    aria-describedby={descId}
                 >
                     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 relative overflow-hidden">
                         {/* Background Effects */}
-                        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-                        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/10 via-purple-500/5 to-transparent rounded-full blur-3xl" />
-                        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tr from-cyan-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl" />
+                        <div className="absolute inset-0 bg-grid-pattern opacity-5" aria-hidden="true" />
+                        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/10 via-purple-500/5 to-transparent rounded-full blur-3xl" aria-hidden="true" />
+                        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tr from-cyan-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl" aria-hidden="true" />
 
                         {/* Header */}
                         <motion.div
@@ -144,13 +151,13 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                 <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center gap-4">
                                         <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 via-blue-500/20 to-purple-500/20 border border-primary/30 shadow-lg">
-                                            <FolderPlus className="h-6 w-6 text-primary drop-shadow-sm" />
+                                            <FolderPlus className="h-6 w-6 text-primary drop-shadow-sm" aria-hidden="true" focusable="false" />
                                         </div>
                                         <div>
-                                            <h1 className="text-2xl font-bold text-gradient-primary">
+                                            <h1 id={titleId} className="text-2xl font-bold text-gradient-primary">
                                                 Create New Project
                                             </h1>
-                                            <p className="text-sm text-muted-foreground mt-1">
+                                            <p id={descId} className="text-sm text-muted-foreground mt-1">
                                                 Set up your AI-powered research workspace with intelligent suggestions
                                             </p>
                                         </div>
@@ -160,6 +167,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                         size="icon"
                                         onClick={handleClose}
                                         disabled={isLoading}
+                                        aria-label="Close create project dialog"
                                         className="h-10 w-10 rounded-xl bg-background/40 backdrop-blur-xl border border-border hover:bg-destructive/10 hover:text-destructive hover:scale-105 transition-all duration-300"
                                         style={{
                                             boxShadow: `
@@ -168,7 +176,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                             `
                                         }}
                                     >
-                                        <X className="h-5 w-5" />
+                                        <X className="h-5 w-5" aria-hidden="true" focusable="false" />
                                     </Button>
                                 </div>
                             </div>
@@ -182,7 +190,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                 transition={{ duration: 0.4, delay: 0.2 }}
                                 className="max-w-6xl mx-auto px-6 py-8 h-full"
                             >
-                                <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
+                                <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col" aria-busy={isLoading}>
                                     <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8">
                                         {/* Left Column */}
                                         <div className="space-y-8 flex flex-col">
@@ -197,7 +205,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                 <CardHeader className="pb-3">
                                                     <CardTitle className="text-base flex items-center gap-3">
                                                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 border border-primary/20">
-                                                            <FileText className="h-4 w-4 text-primary" />
+                                                            <FileText className="h-4 w-4 text-primary" aria-hidden="true" focusable="false" />
                                                         </div>
                                                         <div>
                                                             <span className="font-semibold">Project Name</span>
@@ -208,6 +216,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                 <CardContent>
                                                     <Input
                                                         id="name"
+                                                        aria-label="Project name"
                                                         {...register("name", {
                                                             required: "Project name is required",
                                                             maxLength: { value: 500, message: "Project name must not exceed 500 characters" }
@@ -236,7 +245,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                 <CardHeader className="pb-3">
                                                     <CardTitle className="text-base flex items-center gap-3">
                                                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                                                            <BookOpen className="h-4 w-4 text-blue-500" />
+                                                            <BookOpen className="h-4 w-4 text-blue-500" aria-hidden="true" focusable="false" />
                                                         </div>
                                                         <span className="font-semibold">Description</span>
                                                     </CardTitle>
@@ -244,6 +253,7 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                 <CardContent className="flex-1 flex flex-col">
                                                     <Textarea
                                                         id="description"
+                                                        aria-label="Project description"
                                                         {...register("description", {
                                                             maxLength: { value: 5000, message: "Description must not exceed 5000 characters" }
                                                         })}
@@ -275,12 +285,12 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                     <CardTitle className="text-base flex items-center justify-between gap-2">
                                                         <div className="flex items-center gap-3">
                                                             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                                                                <Brain className="h-4 w-4 text-purple-500" />
+                                                                <Brain className="h-4 w-4 text-purple-500" aria-hidden="true" focusable="false" />
                                                             </div>
                                                             <span className="font-semibold">Research Domain</span>
                                                         </div>
                                                         <div className="flex items-center gap-1 text-xs text-muted-foreground bg-gradient-to-r from-purple-500/10 to-violet-500/10 px-3 py-1.5 rounded-full border border-purple-500/20">
-                                                            <Sparkles className="h-3 w-3 text-purple-500" />
+                                                            <Sparkles className="h-3 w-3 text-purple-500" aria-hidden="true" focusable="false" />
                                                             Smart suggestions
                                                         </div>
                                                     </CardTitle>
@@ -319,13 +329,13 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                     <CardTitle className="text-base flex items-center justify-between gap-2">
                                                         <div className="flex items-center gap-3">
                                                             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-green-500/10 border border-green-500/20">
-                                                                <Target className="h-4 w-4 text-green-500" />
+                                                                <Target className="h-4 w-4 text-green-500" aria-hidden="true" focusable="false" />
                                                             </div>
                                                             <span className="font-semibold">Research Topics</span>
                                                         </div>
                                                         {watchedDomain && (
                                                             <div className="flex items-center gap-1 text-xs text-muted-foreground bg-gradient-to-r from-green-500/10 to-emerald-500/10 px-3 py-1.5 rounded-full border border-green-500/20">
-                                                                <Sparkles className="h-3 w-3 text-green-500" />
+                                                                <Sparkles className="h-3 w-3 text-green-500" aria-hidden="true" focusable="false" />
                                                                 Domain-aware topics
                                                             </div>
                                                         )}
@@ -363,12 +373,12 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                                     <CardTitle className="text-base flex items-center justify-between gap-2">
                                                         <div className="flex items-center gap-3">
                                                             <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20">
-                                                                <Tag className="h-4 w-4 text-orange-500" />
+                                                                <Tag className="h-4 w-4 text-orange-500" aria-hidden="true" focusable="false" />
                                                             </div>
                                                             <span className="font-semibold">Tags</span>
                                                         </div>
                                                         <div className="flex items-center gap-1 text-xs text-muted-foreground bg-gradient-to-r from-orange-500/10 to-amber-500/10 px-3 py-1.5 rounded-full border border-orange-500/20">
-                                                            <Sparkles className="h-3 w-3 text-orange-500" />
+                                                            <Sparkles className="h-3 w-3 text-orange-500" aria-hidden="true" focusable="false" />
                                                             Context-aware suggestions
                                                         </div>
                                                     </CardTitle>
@@ -400,6 +410,8 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             className="p-4 bg-destructive/10 border border-destructive/20 rounded-xl"
+                                            role="alert"
+                                            aria-live="assertive"
                                         >
                                             <div className="flex items-center gap-2">
                                                 <div className="w-2 h-2 rounded-full bg-destructive" />
@@ -438,12 +450,12 @@ export function ProjectCreateDialog({ isOpen, onClose, onProjectCreated }: Proje
                                         >
                                             {isLoading ? (
                                                 <>
-                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" focusable="false" />
                                                     Creating Project...
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Zap className="mr-2 h-4 w-4" />
+                                                    <Zap className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" />
                                                     Create Project
                                                 </>
                                             )}

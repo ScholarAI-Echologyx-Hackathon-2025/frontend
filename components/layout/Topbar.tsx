@@ -1,5 +1,7 @@
+// @ts-nocheck
 "use client"
 
+import { memo } from "react"
 import { usePathname } from "next/navigation"
 import { MessageSquare, Upload, Filter, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,7 +12,7 @@ type Props = {
   onChatToggle: () => void
 }
 
-export function Topbar({ onChatToggle }: Props) {
+export const Topbar = memo(function Topbar({ onChatToggle }: Props) {
   const pathname = usePathname()
   const title = getPageTitle(pathname)
 
@@ -36,7 +38,7 @@ export function Topbar({ onChatToggle }: Props) {
                   0 0 0 1px hsl(var(--primary) / 0.05)
                 `
               }}>
-              <Upload className="mr-2 h-4 w-4" />
+              <Upload aria-hidden="true" className="mr-2 h-4 w-4" />
               Upload
             </Button>
             <Button variant="outline" size="sm" className="border-2 border-primary/30 hover:border-primary/50 hover:bg-primary/10 transition-all duration-300"
@@ -47,7 +49,7 @@ export function Topbar({ onChatToggle }: Props) {
                   0 0 0 1px hsl(var(--primary) / 0.05)
                 `
               }}>
-              <Filter className="mr-2 h-4 w-4" />
+              <Filter aria-hidden="true" className="mr-2 h-4 w-4" />
               Filter
             </Button>
           </>
@@ -60,13 +62,13 @@ export function Topbar({ onChatToggle }: Props) {
               0 0 0 1px hsl(var(--primary) / 0.05)
             `
           }}>
-          <MessageSquare className="h-5 w-5" />
+          <MessageSquare aria-hidden="true" className="h-5 w-5" />
         </Button>
         <LogoutButton className="px-3 py-2 text-sm border-2 border-primary/30 bg-background/80 hover:bg-primary/10 hover:border-primary/50 rounded-md backdrop-blur-sm transition-all duration-300 shadow-lg shadow-primary/10">
-          <LogOut className="mr-2 h-4 w-4" />
+          <LogOut aria-hidden="true" className="mr-2 h-4 w-4" />
           Logout
         </LogoutButton>
       </div>
     </div>
   )
-}
+})

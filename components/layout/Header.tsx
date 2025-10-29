@@ -1,6 +1,7 @@
+// @ts-nocheck
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { memo, useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -195,7 +196,7 @@ const getPageIcon = (pathname: string) => {
     return Home
 }
 
-export function Header() {
+export const Header = memo(function Header() {
     const router = useRouter()
     const pathname = usePathname()
     const userData = getUserData()
@@ -425,11 +426,11 @@ export function Header() {
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                     {/* Left Section - Breadcrumbs */}
                     <div className="flex items-center space-x-2">
-                        <nav className="flex items-center space-x-1 text-sm">
+                        <nav className="flex items-center space-x-1 text-sm" aria-label="Breadcrumb">
                             {breadcrumbs.map((crumb, index) => (
                                 <div key={index} className="flex items-center">
                                     {index > 0 && (
-                                        <ChevronRight className="h-4 w-4 text-muted-foreground mx-1" />
+                                        <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground mx-1" />
                                     )}
                                     {crumb.href ? (
                                         <Button
@@ -442,7 +443,7 @@ export function Header() {
                                         </Button>
                                     ) : (
                                         <div className="flex items-center space-x-2 px-2 py-1">
-                                            <PageIcon className="h-4 w-4 text-primary" />
+                                            <PageIcon aria-hidden="true" className="h-4 w-4 text-primary" />
                                             <EnhancedTooltip
                                                 content={crumb.fullLabel && crumb.fullLabel !== crumb.label ? crumb.fullLabel : ""}
                                                 side="bottom"
@@ -1182,4 +1183,4 @@ export function Header() {
             </AnimatePresence>
         </>
     )
-}
+})

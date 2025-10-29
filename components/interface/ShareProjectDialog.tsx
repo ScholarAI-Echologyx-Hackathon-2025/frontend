@@ -36,6 +36,9 @@ export function ShareProjectDialog({
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
     const { toast } = useToast()
+    // Accessible dialog labelling
+    const titleId = "share-project-title"
+    const descId = "share-project-desc"
 
     const {
         register,
@@ -120,6 +123,10 @@ export function ShareProjectDialog({
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
                     onClick={handleClose}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby={titleId}
+                    aria-describedby={descId}
                 >
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
@@ -132,21 +139,22 @@ export function ShareProjectDialog({
                         <Card className="bg-background/95 backdrop-blur-xl border border-primary/20 shadow-2xl">
                             <CardHeader className="pb-4">
                                 <div className="flex items-center justify-between">
-                                    <CardTitle className="flex items-center gap-2 text-lg">
-                                        <Share2 className="h-5 w-5 text-primary" />
-                                        Share Project
+                                    <CardTitle className="flex items-center gap-2 text-lg" id={titleId}>
+                                        <Share2 className="h-5 w-5 text-primary" aria-hidden="true" focusable="false" />
+                                        <span>Share Project</span>
                                     </CardTitle>
                                     <Button
                                         variant="ghost"
                                         size="sm"
                                         onClick={handleClose}
                                         disabled={isLoading}
+                                        aria-label="Close share project dialog"
                                         className="h-8 w-8 p-0 hover:bg-primary/10"
                                     >
-                                        <X className="h-4 w-4" />
+                                        <X className="h-4 w-4" aria-hidden="true" focusable="false" />
                                     </Button>
                                 </div>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground" id={descId}>
                                     Invite collaborators to work on "{projectName}"
                                 </p>
                             </CardHeader>
@@ -158,14 +166,14 @@ export function ShareProjectDialog({
                                         animate={{ opacity: 1, scale: 1 }}
                                         className="text-center py-8"
                                     >
-                                        <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                                        <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" aria-hidden="true" focusable="false" />
                                         <h3 className="text-xl font-semibold mb-2">Invitation Sent!</h3>
                                         <p className="text-muted-foreground">
                                             The collaborator will receive an email invitation to join the project.
                                         </p>
                                     </motion.div>
                                 ) : (
-                                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" aria-busy={isLoading}>
                                         <div className="space-y-2">
                                             <Label htmlFor="collaboratorEmail">Email Address</Label>
                                             <Input
@@ -182,8 +190,8 @@ export function ShareProjectDialog({
                                                 className="bg-background/50 border-primary/20 focus:border-primary/50"
                                             />
                                             {errors.collaboratorEmail && (
-                                                <p className="text-sm text-red-500 flex items-center gap-1">
-                                                    <AlertCircle className="h-3 w-3" />
+                                                <p className="text-sm text-red-500 flex items-center gap-1" role="alert" aria-live="polite">
+                                                    <AlertCircle className="h-3 w-3" aria-hidden="true" focusable="false" />
                                                     {errors.collaboratorEmail.message}
                                                 </p>
                                             )}
@@ -249,12 +257,12 @@ export function ShareProjectDialog({
                                             >
                                                 {isLoading ? (
                                                     <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" focusable="false" />
                                                         Sending...
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Share2 className="mr-2 h-4 w-4" />
+                                                        <Share2 className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" />
                                                         Send Invitation
                                                     </>
                                                 )}

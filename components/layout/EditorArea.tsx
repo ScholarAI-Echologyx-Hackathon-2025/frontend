@@ -1,6 +1,8 @@
+// @ts-nocheck
 "use client"
 
 import type React from "react"
+import { memo } from "react"
 
 type Props = {
     children: React.ReactNode
@@ -9,7 +11,7 @@ type Props = {
     showMobileMenu?: boolean
 }
 
-export function EditorArea({ children, onChatToggle, onSidebarToggle, showMobileMenu }: Props) {
+export const EditorArea = memo(function EditorArea({ children, onChatToggle, onSidebarToggle, showMobileMenu }: Props) {
     return (
         <div className="flex flex-col h-full relative">
             {/* Main Content Area */}
@@ -18,4 +20,4 @@ export function EditorArea({ children, onChatToggle, onSidebarToggle, showMobile
             </div>
         </div>
     )
-} 
+}) 

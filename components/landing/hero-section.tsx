@@ -15,11 +15,12 @@ export function HeroSection() {
     useEffect(() => {
         let i = 0
         const timer = setInterval(() => {
-            setText(fullText.slice(0, i))
-            i++
             if (i > fullText.length) {
                 clearInterval(timer)
+                return
             }
+            setText(fullText.slice(0, i))
+            i++
         }, 100)
 
         return () => clearInterval(timer)

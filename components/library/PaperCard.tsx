@@ -111,8 +111,9 @@ export function PaperCard({ paper, index, onSelect, onViewPdf, onToggleFavorite,
     }
 
     const formatDate = (dateString: string) => {
+        if (!dateString) return "Unknown"
+        
         try {
-            if (!dateString) return "Unknown"
             return new Date(dateString).getFullYear()
         } catch {
             return "Unknown"
@@ -120,23 +121,25 @@ export function PaperCard({ paper, index, onSelect, onViewPdf, onToggleFavorite,
     }
 
     const getInitials = (title: string) => {
-        return title
-            .split(' ')
-            .slice(0, 2)
-            .map(word => word[0])
-            .join('')
-            .toUpperCase()
+        const words = title.split(' ')
+        const firstTwoWords = words.slice(0, 2)
+        const initials = firstTwoWords.map(word => word[0]).join('')
+        return initials.toUpperCase()
     }
 
     // Generate preview text from abstract or create mock content
     const getPreviewText = () => {
         if (paper.abstractText) {
-            return paper.abstractText.slice(0, 300) + (paper.abstractText.length > 300 ? '...' : '')
+            const maxLength = 300
+            const truncated = paper.abstractText.slice(0, maxLength)
+            return paper.abstractText.length > maxLength ? `${truncated}...` : truncated
         }
+        
         // Generate mock paper content preview
+        const fieldOfStudy = paper.fieldsOfStudy?.[0] || 'research methodology'
         return `${paper.title}
 
-Abstract: This research paper presents novel insights into the field of study related to ${paper.fieldsOfStudy?.[0] || 'research methodology'}. The work contributes to our understanding of fundamental concepts and provides empirical evidence for theoretical frameworks.
+Abstract: This research paper presents novel insights into the field of study related to ${fieldOfStudy}. The work contributes to our understanding of fundamental concepts and provides empirical evidence for theoretical frameworks.
 
 Introduction: Recent developments in this area have highlighted the need for comprehensive analysis of the underlying principles. This paper addresses these challenges by proposing new methodologies and evaluating their effectiveness through rigorous experimentation.
 

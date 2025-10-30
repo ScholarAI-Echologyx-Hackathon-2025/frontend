@@ -34,17 +34,24 @@ export function ChatComposer({ onSend, isLoading = false, externalContexts = [],
   const { documents } = useDocument()
 
   const handleSend = () => {
-    if ((message.trim() || externalContexts.length > 0) && !isLoading && !disabled) {
-      const combinedContexts = [...externalContexts, ...selectedContexts]
-      onSend(message, combinedContexts.length > 0 ? combinedContexts : undefined)
-      setMessage("")
-      setSelectedContexts([])
-      setUploadedImage(null)
-      if (onExternalContextsCleared) onExternalContextsCleared()
+    const hasContent = message.trim() || externalContexts.length > 0
+    const canSend = hasContent && !isLoading && !disabled
+    
+    if (!canSend) return
 
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "auto"
-      }
+    const combinedContexts = [...externalContexts, ...selectedContexts]
+    onSend(message, combinedContexts.length > 0 ? combinedContexts : undefined)
+    
+    setMessage("")
+    setSelectedContexts([])
+    setUploadedImage(null)
+    
+    if (onExternalContextsCleared) {
+      onExternalContextsCleared()
+    }
+
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"
     }
   }
 
@@ -75,14 +82,17 @@ export function ChatComposer({ onSend, isLoading = false, externalContexts = [],
   }
 
   const addContext = (docId: string, title: string) => {
-    if (!selectedContexts.includes(docId)) {
-      setSelectedContexts([...selectedContexts, docId])
-      // Replace the @mention with empty string
-      const lastAtIndex = message.lastIndexOf("@")
-      if (lastAtIndex !== -1) {
-        setMessage(message.substring(0, lastAtIndex) + message.substring(lastAtIndex + mentionQuery.length + 1))
-      }
+    if (selectedContexts.includes(docId)) return
+
+    setSelectedContexts([...selectedContexts, docId])
+    
+    const lastAtIndex = message.lastIndexOf("@")
+    if (lastAtIndex !== -1) {
+      const beforeAt = message.substring(0, lastAtIndex)
+      const afterMention = message.substring(lastAtIndex + mentionQuery.length + 1)
+      setMessage(beforeAt + afterMention)
     }
+    
     setShowMentions(false)
   }
 

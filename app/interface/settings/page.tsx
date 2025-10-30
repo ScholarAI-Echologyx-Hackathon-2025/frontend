@@ -83,7 +83,9 @@ const getColorDisplayValue = (settings: any) => {
     if (settings.colorScheme === 'custom') {
         return 'Custom'
     }
-    return settings.colorScheme.charAt(0).toUpperCase() + settings.colorScheme.slice(1)
+    const firstChar = settings.colorScheme.charAt(0).toUpperCase()
+    const rest = settings.colorScheme.slice(1)
+    return firstChar + rest
 }
 
 export default function SettingsPage() {
@@ -113,11 +115,12 @@ export default function SettingsPage() {
         if (matchingPreset) {
             // If it matches a preset, use that preset name
             updateSetting('colorScheme', matchingPreset.name as any)
-        } else {
-            // If it's a custom color, set custom scheme and store the color
-            updateSetting('colorScheme', 'custom')
-            updateSetting('customAccentColor', color)
+            return
         }
+        
+        // If it's a custom color, set custom scheme and store the color
+        updateSetting('colorScheme', 'custom')
+        updateSetting('customAccentColor', color)
     }
 
 

@@ -94,6 +94,9 @@ export function NotificationContent() {
   // Handle mark as read
   const handleMarkAsRead = async (notificationId: string) => {
     try {
+      const notification = notifications.find(n => n.id === notificationId)
+      if (!notification) return
+
       // Update local state immediately for better UX
       setNotifications(prev =>
         prev.map(n =>
@@ -103,22 +106,19 @@ export function NotificationContent() {
         )
       )
 
-      // Update summary
+      // Update summary counts
       if (summary) {
-        const notification = notifications.find(n => n.id === notificationId)
-        if (notification) {
-          setSummary(prev => ({
-            ...prev!,
-            unread: prev!.unread - 1,
-            by_type: {
-              ...prev!.by_type,
-              [notification.type]: {
-                ...prev!.by_type[notification.type],
-                unread: prev!.by_type[notification.type].unread - 1
-              }
+        setSummary(prev => ({
+          ...prev!,
+          unread: prev!.unread - 1,
+          by_type: {
+            ...prev!.by_type,
+            [notification.type]: {
+              ...prev!.by_type[notification.type],
+              unread: prev!.by_type[notification.type].unread - 1
             }
-          }))
-        }
+          }
+        }))
       }
 
       // Make API call

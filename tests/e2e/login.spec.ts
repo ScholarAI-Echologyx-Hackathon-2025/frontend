@@ -11,7 +11,8 @@ test.describe('Login Flow', () => {
 
         // Mock the login API call to return a successful response
         await page.route('**/api/v1/auth/login', route => {
-            console.log('API call intercepted:', route.request().url());
+            const requestUrl = route.request().url();
+            console.log('API call intercepted:', requestUrl);
             route.fulfill({
                 status: 200,
                 contentType: 'application/json',

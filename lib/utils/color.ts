@@ -19,39 +19,53 @@ export interface RGBColor {
  */
 export function hexToHsl(hex: string): HSLColor {
     // Remove # if present
-    hex = hex.replace('#', '')
+    const cleanHex = hex.replace('#', '');
 
     // Convert hex to RGB
-    const r = parseInt(hex.substring(0, 2), 16) / 255
-    const g = parseInt(hex.substring(2, 4), 16) / 255
-    const b = parseInt(hex.substring(4, 6), 16) / 255
+    const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
+    const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
+    const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
 
-    const max = Math.max(r, g, b)
-    const min = Math.min(r, g, b)
-    let h: number, s: number, l: number
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const delta = max - min;
+    
+    let h: number, s: number;
+    const l = (max + min) / 2;
 
-    l = (max + min) / 2
-
-    if (max === min) {
-        h = s = 0 // achromatic
+    if (delta === 0) {
+        h = s = 0; // achromatic
     } else {
-        const d = max - min
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-
-        switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break
-            case g: h = (b - r) / d + 2; break
-            case b: h = (r - g) / d + 4; break
-            default: h = 0
-        }
-        h /= 6
+        s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+        h = calculateHue(r, g, b, max, delta);
     }
 
     return {
         h: Math.round(h * 360),
         s: Math.round(s * 100),
         l: Math.round(l * 100)
+    };
+}
+
+// Calculate hue component for HSL conversion
+function calculateHue(r: number, g: number, b: number, max: number, delta: number): number {
+    let h: number;
+    
+    switch (max) {
+        case r: 
+            h = (g - b) / delta + (g < b ? 6 : 0); 
+            break;
+        case g: 
+            h = (b - r) / delta + 2; 
+            break;
+        case b: 
+            h = (r - g) / delta + 4; 
+            break;
+        default: 
+            h = 0;
     }
+    
+    return h / 6;
 }
 
 /**

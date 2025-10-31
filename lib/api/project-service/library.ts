@@ -65,47 +65,54 @@ export interface UploadedPaperRequest {
 // Helper function to handle API response
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
     if (!response.ok) {
-        // Try to parse error response as JSON, fallback to text
-        let errorMessage = `HTTP error! status: ${response.status}`
-        try {
-            const errorData = await response.json()
-            errorMessage = errorData.message || errorData.error || errorMessage
-        } catch {
-            // If JSON parsing fails, try to get text content
-            try {
-                const textContent = await response.text()
-                errorMessage = textContent || errorMessage
-            } catch {
-                // If all else fails, use the status-based message
-            }
-        }
-        throw new Error(errorMessage)
+        const errorMessage = await extractErrorMessage(response);
+        throw new Error(errorMessage);
     }
 
-    // Try to parse the response as JSON
-    let apiResponse: APIResponse<T>
+    return await parseJsonResponse<T>(response);
+}
+
+// Extract error message from response
+const extractErrorMessage = async (response: Response): Promise<string> => {
+    const defaultError = `HTTP error! status: ${response.status}`;
+    
     try {
-        const jsonData = await response.json()
-        apiResponse = jsonData
+        const errorData = await response.json();
+        return errorData.message || errorData.error || defaultError;
+    } catch {
+        try {
+            const textContent = await response.text();
+            return textContent || defaultError;
+        } catch {
+            return defaultError;
+        }
+    }
+}
+
+// Parse JSON response and handle different structures
+const parseJsonResponse = async <T>(response: Response): Promise<T> => {
+    let apiResponse: APIResponse<T>;
+    
+    try {
+        apiResponse = await response.json();
     } catch (error) {
-        throw new Error("Invalid JSON response from server")
+        throw new Error("Invalid JSON response from server");
     }
 
     // Handle different response structures
     if (apiResponse.data !== undefined) {
         // Check if data has an 'items' property (for paginated responses)
         if (apiResponse.data && typeof apiResponse.data === 'object' && 'items' in apiResponse.data) {
-            return (apiResponse.data as any).items
+            return (apiResponse.data as any).items;
         }
-        // Return the data directly
-        return apiResponse.data
-    } else if (Array.isArray(apiResponse)) {
-        // Direct array response
-        return apiResponse as unknown as T
-    } else {
-        // If no data property, return the whole response
-        return apiResponse as unknown as T
+        return apiResponse.data;
     }
+    
+    if (Array.isArray(apiResponse)) {
+        return apiResponse as unknown as T;
+    }
+    
+    return apiResponse as unknown as T;
 }
 
 export const libraryApi = {

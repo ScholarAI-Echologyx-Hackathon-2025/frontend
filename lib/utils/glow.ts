@@ -1,11 +1,25 @@
 // Utility functions for handling glow effects based on user settings
 
+const DISABLED_GLOW_STYLES = {
+    boxShadow: 'none',
+    textShadow: 'none'
+}
+
+const DISABLED_SHADOW_STYLES = {
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+}
+
+const DISABLED_PROGRESS_STYLES = {
+    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
+}
+
+const DISABLED_BACKGROUND_STYLES = {
+    background: 'none'
+}
+
 export const getGlowStyles = (enabled: boolean = true) => {
     if (!enabled) {
-        return {
-            boxShadow: 'none',
-            textShadow: 'none'
-        }
+        return DISABLED_GLOW_STYLES
     }
 
     return {
@@ -17,7 +31,7 @@ export const getGlowStyles = (enabled: boolean = true) => {
 export const getGlowButtonStyles = (enabled: boolean = true) => {
     if (!enabled) {
         return {
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            ...DISABLED_SHADOW_STYLES,
             border: '1px solid hsl(var(--primary) / 0.2)'
         }
     }
@@ -31,7 +45,7 @@ export const getGlowButtonStyles = (enabled: boolean = true) => {
 export const getGlowCardStyles = (enabled: boolean = true) => {
     if (!enabled) {
         return {
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            ...DISABLED_SHADOW_STYLES,
             border: '1px solid hsl(var(--primary) / 0.1)'
         }
     }
@@ -44,9 +58,7 @@ export const getGlowCardStyles = (enabled: boolean = true) => {
 
 export const getGlowProgressStyles = (enabled: boolean = true) => {
     if (!enabled) {
-        return {
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1)'
-        }
+        return DISABLED_PROGRESS_STYLES
     }
 
     return {
@@ -56,9 +68,7 @@ export const getGlowProgressStyles = (enabled: boolean = true) => {
 
 export const getGlowBackgroundStyles = (enabled: boolean = true) => {
     if (!enabled) {
-        return {
-            background: 'none'
-        }
+        return DISABLED_BACKGROUND_STYLES
     }
 
     return {

@@ -18,6 +18,9 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
   toggleShowPassword,
 }: PasswordFieldProps, ref: React.Ref<HTMLInputElement>) {
   const inputId = id || name
+  const inputType = showPassword ? "text" : "password"
+  const toggleLabel = showPassword ? "Hide password" : "Show password"
+  
   return (
     <div className="mb-4">
       <label htmlFor={inputId} className="block text-foreground font-['Segoe_UI'] text-sm pl-8 mb-2 font-medium">
@@ -28,7 +31,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
           ref={ref}
           id={inputId}
           name={name}
-          type={showPassword ? "text" : "password"}
+          type={inputType}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -50,7 +53,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(fu
           type="button"
           onClick={() => toggleShowPassword?.()} // <-- call the function safely
           className="absolute right-6 top-1/2 transform -translate-y-1/2 text-primary/70 hover:text-primary transition-colors duration-200"
-          aria-label={showPassword ? "Hide password" : "Show password"}
+          aria-label={toggleLabel}
         >
           {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
         </button>

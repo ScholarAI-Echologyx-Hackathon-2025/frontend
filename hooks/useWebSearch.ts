@@ -47,23 +47,30 @@ export function useWebSearch(): UseWebSearchState & UseWebSearchActions {
         })
 
         try {
-            // Enhanced loading messages with more variety
-            const loadingMessages = [
-                "Initializing search agent...",
-                "Authenticating with academic databases...",
-                "Sending request to ArXiv API...",
-                "Connecting to Semantic Scholar...",
-                "Scanning research repositories...",
-                "Processing query parameters...",
-                "Filtering relevant papers...",
-                "Cross-referencing citations...",
-                "Analyzing paper metadata...",
-                "Enriching with author information...",
-                "Validating paper quality...",
-                "Organizing search results...",
-                "Finalizing paper collection...",
-                "Search completed successfully!"
-            ]
+const SEARCH_LOADING_MESSAGES = [
+    "Initializing search agent...",
+    "Authenticating with academic databases...",
+    "Sending request to ArXiv API...",
+    "Connecting to Semantic Scholar...",
+    "Scanning research repositories...",
+    "Processing query parameters...",
+    "Filtering relevant papers...",
+    "Cross-referencing citations...",
+    "Analyzing paper metadata...",
+    "Enriching with author information...",
+    "Validating paper quality...",
+    "Organizing search results...",
+    "Finalizing paper collection...",
+    "Search completed successfully!"
+]
+
+const PROGRESS_INTERVALS = {
+    fast: { min: 2, max: 7, threshold: 15 },
+    medium: { min: 1, max: 5, threshold: 40 },
+    steady: { min: 2, max: 5, threshold: 70 },
+    slow: { min: 1, max: 3, threshold: 90 },
+    verySlow: { min: 0.5, max: 1.5, threshold: 100 }
+}
 
             // Realistic progress simulation
             const simulateRealisticProgress = () => {
@@ -93,12 +100,12 @@ export function useWebSearch(): UseWebSearchState & UseWebSearchActions {
                     currentProgress = Math.min(currentProgress + increment, 99)
 
                     // Update message based on progress
-                    const expectedMessageIndex = Math.floor((currentProgress / 100) * (loadingMessages.length - 1))
+                    const expectedMessageIndex = Math.floor((currentProgress / 100) * (SEARCH_LOADING_MESSAGES.length - 1))
                     if (expectedMessageIndex > messageIndex) {
                         messageIndex = expectedMessageIndex
                     }
 
-                    updateProgress(currentProgress, loadingMessages[messageIndex])
+                    updateProgress(currentProgress, SEARCH_LOADING_MESSAGES[messageIndex])
                 }, Math.random() * 500 + 300) // Random interval between 300-800ms
 
                 return progressInterval

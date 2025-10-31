@@ -13,14 +13,15 @@ export function ChatMessage({ message }: Props) {
   const isUser = message.role === "user"
   const { documents } = useDocument()
 
-  // Build context chips array mixing docs and raw strings
-  const contextChips = (message.context || []).map((ctx) => {
+  const buildContextChip = (ctx: string) => {
     const doc = documents.find((d) => d.id === ctx)
     if (doc) {
       return { type: "doc" as const, label: doc.title, id: doc.id }
     }
     return { type: "text" as const, label: ctx }
-  })
+  }
+
+  const contextChips = (message.context || []).map(buildContextChip)
 
   return (
     <div

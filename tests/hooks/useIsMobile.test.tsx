@@ -1,10 +1,10 @@
-import React from "react"
-import { render, screen } from "@testing-library/react"
-import { useIsMobile } from "@/hooks/use-mobile"
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function TestComponent() {
-    const isMobile = useIsMobile()
-    return <span data-testid="status">{isMobile ? "mobile" : "desktop"}</span>
+    const isMobile = useIsMobile();
+    return <span data-testid="status">{isMobile ? "mobile" : "desktop"}</span>;
 }
 
 describe("useIsMobile", () => {

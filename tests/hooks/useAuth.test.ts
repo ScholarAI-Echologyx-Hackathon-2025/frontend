@@ -56,16 +56,16 @@ describe('useAuth', () => {
             expect(result.current.loading).toBe(false);
         });
 
-        const mockUser: User = { id: '2', email: 'new@example.com' };
-        const mockToken = 'new-token';
+        const newUser: User = { id: '2', email: 'new@example.com' };
+        const newToken = 'new-token';
 
         act(() => {
-            result.current.updateAuthState(mockToken, mockUser);
+            result.current.updateAuthState(newToken, newUser);
         });
 
         expect(result.current.isAuthenticated).toBe(true);
-        expect(result.current.user).toEqual(mockUser);
-        expect(result.current.token).toEqual(mockToken);
+        expect(result.current.user).toEqual(newUser);
+        expect(result.current.token).toEqual(newToken);
     });
 
     it('should clear auth state when clearAuth is called', async () => {

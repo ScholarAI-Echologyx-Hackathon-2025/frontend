@@ -26,6 +26,17 @@ import { useRouter } from "next/navigation"
 import { AuthorDialog } from "@/components/interface/AuthorDialog"
 import { useAuthorDialog } from "@/hooks/useAuthorDialog"
 
+const GRADIENT_OPTIONS = [
+    "from-blue-500 to-cyan-500",
+    "from-purple-500 to-pink-500",
+    "from-green-500 to-emerald-500",
+    "from-orange-500 to-red-500",
+    "from-indigo-500 to-purple-500",
+    "from-cyan-500 to-blue-500",
+    "from-pink-500 to-rose-500",
+    "from-emerald-500 to-teal-500"
+] as const
+
 interface PaperCardProps {
     paper: Paper
     index: number
@@ -47,17 +58,7 @@ export function PaperCard({ paper, index, onSelect, onViewPdf, onToggleFavorite,
     // Generate a gradient for the thumbnail based on paper title (fallback)
     const getGradientFromTitle = (title: string) => {
         const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-        const gradients = [
-            "from-blue-500 to-cyan-500",
-            "from-purple-500 to-pink-500",
-            "from-green-500 to-emerald-500",
-            "from-orange-500 to-red-500",
-            "from-indigo-500 to-purple-500",
-            "from-cyan-500 to-blue-500",
-            "from-pink-500 to-rose-500",
-            "from-emerald-500 to-teal-500"
-        ]
-        return gradients[hash % gradients.length]
+        return GRADIENT_OPTIONS[hash % GRADIENT_OPTIONS.length]
     }
 
     // Load PDF thumbnail if available - prioritize actual PDF first page

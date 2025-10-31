@@ -9,28 +9,31 @@ import { DocumentCard } from "@/components/library/DocumentCard"
 import { DocumentList } from "@/components/library/DocumentList"
 import { cn } from "@/lib/utils/cn"
 
-// Sample data
-const documents = [
+const SAMPLE_DOCUMENTS = [
   { id: "1", title: "Research Paper.pdf", type: "pdf", updatedAt: "2023-04-15" },
   { id: "2", title: "Meeting Notes.md", type: "md", updatedAt: "2023-04-10" },
   { id: "3", title: "Project Proposal.pdf", type: "pdf", updatedAt: "2023-04-05" },
   { id: "4", title: "Literature Review.md", type: "md", updatedAt: "2023-03-28" },
   { id: "5", title: "Data Analysis.txt", type: "text", updatedAt: "2023-03-20" },
   { id: "6", title: "Conference Paper.pdf", type: "pdf", updatedAt: "2023-03-15" },
-]
+] as const
+
+const sortByDate = (docs: readonly any[], order: "asc" | "desc") => {
+  return [...docs].sort((a, b) => {
+    const dateA = new Date(a.updatedAt).getTime()
+    const dateB = new Date(b.updatedAt).getTime()
+    return order === "asc" ? dateA - dateB : dateB - dateA
+  })
+}
 
 export function LibraryContent() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [searchQuery, setSearchQuery] = useState("")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
 
-  const filteredDocuments = documents.filter((doc) => doc.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredDocuments = SAMPLE_DOCUMENTS.filter((doc) => doc.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  const sortedDocuments = [...filteredDocuments].sort((a, b) => {
-    const dateA = new Date(a.updatedAt).getTime()
-    const dateB = new Date(b.updatedAt).getTime()
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA
-  })
+  const sortedDocuments = sortByDate(filteredDocuments, sortOrder)
 
   const getDocumentIcon = (type: string) => {
     switch (type) {

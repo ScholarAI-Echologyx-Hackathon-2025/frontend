@@ -51,14 +51,14 @@ export const hasStructuredFacts = async (paperId: string): Promise<StructuredFac
     const data = await response.json();
     
     // Check if there's a completed extraction
-    const hasCompletedExtraction = data?.extractions?.some(
+    const completedExtraction = data?.extractions?.find(
       (extraction: any) => extraction.status === 'completed'
     );
 
     return {
-      hasStructuredData: hasCompletedExtraction,
-      extractionId: hasCompletedExtraction ? data.extractions[0]?.id : undefined,
-      completedAt: hasCompletedExtraction ? data.extractions[0]?.completedAt : undefined,
+      hasStructuredData: !!completedExtraction,
+      extractionId: completedExtraction?.id,
+      completedAt: completedExtraction?.completedAt,
     };
   } catch (error) {
     console.error(`❌ Error checking structured facts for paper ${paperId}:`, error);

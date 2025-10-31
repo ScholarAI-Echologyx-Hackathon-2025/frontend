@@ -6,7 +6,7 @@ describe("useToast", () => {
     beforeEach(() => {
         act(() => {
             testApi.dispatch({ type: "REMOVE_TOAST" });
-        })
+        });
     });
 
     it("should add a toast", () => {

@@ -19,6 +19,10 @@ import {
 } from "lucide-react"
 import { notesApi, AIContentRequest, AIContentResponse } from "@/lib/api/project-service/note"
 
+const ERROR_MESSAGES = {
+    DEFAULT: "Failed to generate content",
+} as const
+
 interface AIEditorProps {
     isOpen: boolean
     onClose: () => void
@@ -83,11 +87,11 @@ export function AIEditor({
                 setGeneratedContent(response.content)
                 setHasGenerated(true)
             } else {
-                setError(response.error || "Failed to generate content")
+                setError(response.error || ERROR_MESSAGES.DEFAULT)
             }
         } catch (err) {
             console.error("AI generation error:", err)
-            setError(err instanceof Error ? err.message : "Failed to generate content")
+            setError(err instanceof Error ? err.message : ERROR_MESSAGES.DEFAULT)
         } finally {
             setIsGenerating(false)
         }
@@ -118,10 +122,14 @@ export function AIEditor({
         }
     }
 
-    const handleRegenerate = () => {
+    const resetGenerationState = () => {
         setGeneratedContent("")
         setError(null)
         setHasGenerated(false)
+    }
+
+    const handleRegenerate = () => {
+        resetGenerationState()
         handleGenerate()
     }
 

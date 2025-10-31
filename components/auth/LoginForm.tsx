@@ -16,6 +16,22 @@ import { useNavigationWithLoading } from "@/components/ui/RouteTransition"
 import { Brain } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const TOAST_MESSAGES = {
+    SESSION_EXPIRED: {
+        title: "Session Expired",
+        description: "Your session has expired. Please log in again to continue.",
+    },
+    SIGNUP_SUCCESS: {
+        title: "Account Created Successfully!",
+        description: "Please log in with your credentials.",
+    },
+    RESET_SUCCESS: {
+        title: "Password Reset Successfully!",
+        description: "Please log in with your new password.",
+    },
+} as const
 
 
 export function LoginForm() {
@@ -37,38 +53,32 @@ export function LoginForm() {
     /*  Handlers                                                 */
     /* ────────────────────────────────────────────────────────── */
     useEffect(() => {
+        const clearUrlParam = (param: string) => {
+            const newUrl = new URL(window.location.href)
+            newUrl.searchParams.delete(param)
+            window.history.replaceState({}, "", newUrl.toString())
+        }
+
         if (searchParams.get("session") === "expired") {
             toast({
-                title: "Session Expired",
-                description: "Your session has expired. Please log in again to continue.",
+                ...TOAST_MESSAGES.SESSION_EXPIRED,
                 variant: "destructive",
             })
-            // Clear the URL parameter to prevent showing again on reload
-            const newUrl = new URL(window.location.href)
-            newUrl.searchParams.delete("session")
-            window.history.replaceState({}, "", newUrl.toString())
+            clearUrlParam("session")
         }
         if (searchParams.get("signup") === "success") {
             toast({
-                title: "Account Created Successfully!",
-                description: "Please log in with your credentials.",
+                ...TOAST_MESSAGES.SIGNUP_SUCCESS,
                 variant: "success",
             })
-            // Clear the URL parameter to prevent showing again on reload
-            const newUrl = new URL(window.location.href)
-            newUrl.searchParams.delete("signup")
-            window.history.replaceState({}, "", newUrl.toString())
+            clearUrlParam("signup")
         }
         if (searchParams.get("reset") === "success") {
             toast({
-                title: "Password Reset Successfully!",
-                description: "Please log in with your new password.",
+                ...TOAST_MESSAGES.RESET_SUCCESS,
                 variant: "success",
             })
-            // Clear the URL parameter to prevent showing again on reload
-            const newUrl = new URL(window.location.href)
-            newUrl.searchParams.delete("reset")
-            window.history.replaceState({}, "", newUrl.toString())
+            clearUrlParam("reset")
         }
     }, [searchParams, toast])
 
@@ -87,7 +97,7 @@ export function LoginForm() {
         if (!formData.email) {
             newErrors.email = "Email is required"
             valid = false
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        } else if (!EMAIL_REGEX.test(formData.email)) {
             newErrors.email = "Please enter a valid email"
             valid = false
         }

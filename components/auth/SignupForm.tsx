@@ -15,6 +15,8 @@ import { useNavigationWithLoading } from "@/components/ui/RouteTransition"
 import { Brain } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MIN_PASSWORD_LENGTH = 8
 
 
 export function SignupForm() {
@@ -57,7 +59,7 @@ export function SignupForm() {
         if (!formData.email) {
             newErrors.email = "Email is required"
             valid = false
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        } else if (!EMAIL_REGEX.test(formData.email)) {
             newErrors.email = "Please enter a valid email"
             valid = false
         }
@@ -65,8 +67,8 @@ export function SignupForm() {
         if (!formData.password) {
             newErrors.password = "Password is required"
             valid = false
-        } else if (formData.password.length < 8) {
-            newErrors.password = "Password must be at least 8 characters"
+        } else if (formData.password.length < MIN_PASSWORD_LENGTH) {
+            newErrors.password = `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
             valid = false
         }
 

@@ -59,8 +59,8 @@ export function ServiceLogsViewer({ className }: ServiceLogsViewerProps) {
         loadLogs();
         
         // Auto-refresh logs every 5 seconds
-        const interval = setInterval(loadLogs, 5000);
-        return () => clearInterval(interval);
+        const refreshInterval = setInterval(loadLogs, 5000);
+        return () => clearInterval(refreshInterval);
     }, []);
 
     // Filter logs
@@ -90,7 +90,7 @@ export function ServiceLogsViewer({ className }: ServiceLogsViewerProps) {
 
     const uniqueServices = Array.from(new Set(logs.map(log => log.service)));
 
-    const clearLogs = () => {
+    const handleClearLogs = () => {
         setLogs([]);
         setFilteredLogs([]);
     };
@@ -142,7 +142,7 @@ export function ServiceLogsViewer({ className }: ServiceLogsViewerProps) {
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={clearLogs}
+                            onClick={handleClearLogs}
                             disabled={logs.length === 0}
                         >
                             <Trash2 className="w-4 h-4 mr-1" />

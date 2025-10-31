@@ -19,33 +19,38 @@ import {
     BulkReadingListUpdate,
 } from "@/types/project"
 
+const ERROR_MESSAGES = {
+    AUTH: 'User not authenticated',
+    INVALID_JSON: "Invalid JSON response from server",
+} as const
+
+const buildErrorMessage = (status: number, statusText: string) => 
+    `HTTP error! status: ${status}`
+
 // Helper function to handle API response
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
     if (!response.ok) {
-        // Try to parse error response as JSON, fallback to text
-        let errorMessage = `HTTP error! status: ${response.status}`
+        let errorMessage = buildErrorMessage(response.status, response.statusText)
         try {
             const errorData = await response.json()
             errorMessage = errorData.message || errorData.error || errorMessage
         } catch {
-            // If JSON parsing fails, try to get text content
             try {
                 const textContent = await response.text()
                 errorMessage = textContent || errorMessage
             } catch {
-                // If all else fails, use the status-based message
+                // Use the status-based message
             }
         }
         throw new Error(errorMessage)
     }
 
-    // Try to parse the response as JSON
     let apiResponse: APIResponse<T>
     try {
         const jsonData = await response.json()
         apiResponse = jsonData
     } catch (error) {
-        throw new Error("Invalid JSON response from server")
+        throw new Error(ERROR_MESSAGES.INVALID_JSON)
     }
 
     // Handle different response structures
@@ -74,7 +79,7 @@ export const projectsApi = {
             const userData = getUserData()
 
             if (!userData?.id) {
-                throw new Error('User not authenticated')
+                throw new Error(ERROR_MESSAGES.AUTH)
             }
 
             const response = await authenticatedFetch(
@@ -111,7 +116,7 @@ export const projectsApi = {
             const userData = getUserData()
 
             if (!userData?.id) {
-                throw new Error('User not authenticated')
+                throw new Error(ERROR_MESSAGES.AUTH)
             }
 
             if (!silent) {

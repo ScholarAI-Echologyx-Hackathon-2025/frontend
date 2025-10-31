@@ -79,26 +79,21 @@ export const continueChatSession = async (
       selectionContext,
     };
 
-    const response = await authenticatedFetch(
-      getMicroserviceUrl("project-service", `/api/papers/${paperId}/chat/sessions/${sessionId}/messages`),
-      {
-        method: "POST",
-        body: JSON.stringify(chatRequest),
-      }
-    );
+    const url = getMicroserviceUrl("project-service", `/api/papers/${paperId}/chat/sessions/${sessionId}/messages`);
+    const response = await authenticatedFetch(url, {
+      method: "POST",
+      body: JSON.stringify(chatRequest),
+    });
 
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || "Failed to continue chat");
     }
 
-    const result = await response.json();
-    return result;
+    return await response.json();
   } catch (error) {
     console.error("Continue chat error:", error);
-    throw error instanceof Error
-      ? error
-      : new Error("Failed to continue chat");
+    throw error instanceof Error ? error : new Error("Failed to continue chat");
   }
 };
 
@@ -146,9 +141,7 @@ export const chatWithPaper = async (
     return result;
   } catch (error) {
     console.error("Paper chat error:", error);
-    throw error instanceof Error
-      ? error
-      : new Error("Failed to chat with paper");
+    throw error instanceof Error ? error : new Error("Failed to chat with paper");
   }
 };
 
@@ -172,9 +165,7 @@ export const getChatMessages = async (
     return result.data;
   } catch (error) {
     console.error("Chat messages error:", error);
-    throw error instanceof Error
-      ? error
-      : new Error("Failed to get chat messages");
+    throw error instanceof Error ? error : new Error("Failed to get chat messages");
   }
 };
 

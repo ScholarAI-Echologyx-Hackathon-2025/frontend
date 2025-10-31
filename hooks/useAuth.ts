@@ -3,6 +3,15 @@
 import { useState, useEffect } from 'react'
 import { getAuthToken, getUserData, isAuthenticated, clearAuthData, refreshAccessToken } from '@/lib/api/user-service'
 
+const STORAGE_KEYS = {
+    TOKEN: 'scholarai_token',
+    USER: 'scholarai_user',
+} as const
+
+const AUTH_COOKIES = {
+    REFRESH_TOKEN: 'refreshToken=',
+} as const
+
 export interface User {
     id: string
     email: string
@@ -35,8 +44,7 @@ export const useAuth = () => {
 
                 // If no access token but we might have a refresh token, try to refresh
                 if (!authenticated && typeof window !== "undefined") {
-                    // Check if there's a refresh token cookie (HttpOnly cookie)
-                    const hasRefreshTokenCookie = document.cookie.includes("refreshToken=")
+                    const hasRefreshTokenCookie = document.cookie.includes(AUTH_COOKIES.REFRESH_TOKEN)
 
                     if (hasRefreshTokenCookie) {
                         console.log("🔄 No access token found, but refresh token cookie available. Attempting to refresh...")
@@ -77,7 +85,7 @@ export const useAuth = () => {
 
         // Listen for storage changes (e.g., login/logout in another tab)
         const handleStorageChange = (e: StorageEvent) => {
-            if (e.key === 'scholarai_token' || e.key === 'scholarai_user') {
+            if (e.key === STORAGE_KEYS.TOKEN || e.key === STORAGE_KEYS.USER) {
                 checkAuth()
             }
         }

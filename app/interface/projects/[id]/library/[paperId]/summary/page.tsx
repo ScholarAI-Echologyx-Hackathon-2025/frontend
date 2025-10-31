@@ -175,10 +175,6 @@ const GENERATE_DUR = 120; // 2 min
 
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
-/**
- * Returns progress in [0,1] for a section based on the global 5-min timer.
- * overallTimer counts DOWN from 300 -> 0 in your code.
- */
 const sectionProgress = (overallTimer: number, sectionStart: number, sectionDuration: number) => {
     const elapsed = TOTAL_TIME - overallTimer; // 0 .. 300
     return clamp01((elapsed - sectionStart) / sectionDuration);

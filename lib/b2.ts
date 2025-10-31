@@ -1,8 +1,3 @@
-/**
- * Backblaze B2 Cloud Storage Authentication and Download
- * Based on B2 API v2 for authentication and file downloads
- */
-
 interface B2AuthConfig {
     authToken: string;
     apiUrl: string;
@@ -14,10 +9,6 @@ interface B2Credentials {
     applicationKey: string;
 }
 
-/**
- * Download PDF using server-side B2 authentication
- * This method uses our secure API endpoint to handle B2 credentials server-side
- */
 export const downloadPdfViaServer = async (pdfUrl: string, filename: string): Promise<void> => {
     try {
         console.log('🔽 Starting server-side B2 download for:', filename);
@@ -66,18 +57,10 @@ export const downloadPdfViaServer = async (pdfUrl: string, filename: string): Pr
     }
 };
 
-/**
- * Legacy function - now redirects to server-side implementation
- * @deprecated Use downloadPdfViaServer instead
- */
 export const authorizeB2Account = async (): Promise<B2AuthConfig> => {
     throw new Error('Client-side B2 authentication is deprecated. Use server-side API instead.');
 };
 
-/**
- * Extract file ID from B2 download URL
- * Expected format: https://f003.backblazeb2.com/b2api/v3/b2_download_file_by_id?fileId=...
- */
 export const extractFileIdFromUrl = (url: string): string => {
     try {
         const urlObj = new URL(url);
@@ -93,10 +76,6 @@ export const extractFileIdFromUrl = (url: string): string => {
     }
 };
 
-/**
- * Download file from B2 using file ID
- * Similar to the Python script's download_file_by_id function
- */
 export const downloadB2FileById = async (
     authConfig: B2AuthConfig,
     fileId: string,
@@ -147,10 +126,6 @@ export const downloadB2FileById = async (
     }
 };
 
-/**
- * Complete B2 download workflow using secure server-side authentication
- * This is the main function to use for downloading PDFs from B2
- */
 export const downloadPdfFromB2 = async (pdfUrl: string, filename: string): Promise<void> => {
     try {
         // Check if this is a B2 URL
@@ -167,10 +142,6 @@ export const downloadPdfFromB2 = async (pdfUrl: string, filename: string): Promi
     }
 };
 
-/**
- * Get authenticated B2 file URL for viewing (without downloading)
- * This creates a temporary authenticated URL that can be used in iframe/embed
- */
 export const getAuthenticatedB2Url = async (pdfUrl: string): Promise<string> => {
     try {
         // Check if this is a B2 URL

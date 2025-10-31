@@ -115,25 +115,25 @@ export const checkPaperChatReadiness = async (paperId: string): Promise<{
 }> => {
   try {
     // Check if paper has structured facts (extraction completed)
-    const hasStructuredData = await hasStructuredFacts(paperId);
+    const structuredDataCheck = await hasStructuredFacts(paperId);
     
-    if (hasStructuredData.hasStructuredData) {
+    if (structuredDataCheck.hasStructuredData) {
       return { isReady: true, needsExtraction: false, status: 'COMPLETED' };
-    } else {
-      // Get detailed status to understand why it's not ready
-      const detailedStatus = await getPaperExtractionStatus(paperId);
-      
-      if (detailedStatus) {
-        const isProcessing = detailedStatus.status === 'PROCESSING' || detailedStatus.status === 'PENDING';
-        return { 
-          isReady: false, 
-          needsExtraction: !isProcessing, 
-          status: detailedStatus.status 
-        };
-      }
-      
+    }
+    
+    // Get detailed status to understand why it's not ready
+    const detailedStatus = await getPaperExtractionStatus(paperId);
+    
+    if (!detailedStatus) {
       return { isReady: false, needsExtraction: true, status: 'NOT_STARTED' };
     }
+    
+    const isProcessing = detailedStatus.status === 'PROCESSING' || detailedStatus.status === 'PENDING';
+    return { 
+      isReady: false, 
+      needsExtraction: !isProcessing, 
+      status: detailedStatus.status 
+    };
   } catch (error) {
     console.error("Error checking paper chat readiness:", error);
     // Assume extraction is needed if we can't check

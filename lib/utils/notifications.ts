@@ -1,8 +1,12 @@
 import { SystemNotification } from "@/types/notification"
 
+const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+const MAX_STORED_NOTIFICATIONS = 50
+const STORAGE_KEY = 'systemNotifications'
+
 // Simple UUID generator (no external dependency needed)
 const generateUUID = (): string => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    return UUID_TEMPLATE.replace(/[xy]/g, function (c) {
         const r = Math.random() * 16 | 0
         const v = c == 'x' ? r : (r & 0x3 | 0x8)
         return v.toString(16)
@@ -46,9 +50,9 @@ export const createSystemNotification = (
 // Helper function to save system notification locally
 export const saveSystemNotification = (notification: SystemNotification) => {
     try {
-        const existingNotifications = JSON.parse(localStorage.getItem('systemNotifications') || '[]')
-        const updatedNotifications = [notification, ...existingNotifications].slice(0, 50) // Keep only last 50
-        localStorage.setItem('systemNotifications', JSON.stringify(updatedNotifications))
+        const existingNotifications = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+        const updatedNotifications = [notification, ...existingNotifications].slice(0, MAX_STORED_NOTIFICATIONS)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNotifications))
 
         // Trigger a custom event to notify components about new notification
         window.dispatchEvent(new CustomEvent('newSystemNotification', { detail: notification }))

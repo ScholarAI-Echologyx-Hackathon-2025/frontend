@@ -5,47 +5,53 @@ import { Todo, TodoFilters, TodoSortOptions, TodoSummary, TodoForm } from "@/typ
 // Helper function to handle API response
 const handleApiResponse = async <T>(response: Response): Promise<T> => {
     if (!response.ok) {
-        // Try to parse error response as JSON, fallback to text
-        let errorMessage = `HTTP error! status: ${response.status}`
-        try {
-            const errorData = await response.json()
-            errorMessage = errorData.message || errorData.error || errorMessage
-        } catch {
-            // If JSON parsing fails, try to get text content
-            try {
-                const textContent = await response.text()
-                errorMessage = textContent || errorMessage
-            } catch {
-                // If all else fails, use the status-based message
-            }
-        }
+        const errorMessage = await getErrorMessage(response)
         throw new Error(errorMessage)
     }
 
-    // Try to parse the response as JSON
-    let apiResponse: any
+    const apiResponse = await parseJsonResponse(response)
+    return extractDataFromResponse<T>(apiResponse)
+}
+
+const getErrorMessage = async (response: Response): Promise<string> => {
+    const defaultMessage = `HTTP error! status: ${response.status}`
+    
     try {
-        const jsonData = await response.json()
-        apiResponse = jsonData
+        const errorData = await response.json()
+        return errorData.message || errorData.error || defaultMessage
+    } catch {
+        try {
+            const textContent = await response.text()
+            return textContent || defaultMessage
+        } catch {
+            return defaultMessage
+        }
+    }
+}
+
+const parseJsonResponse = async (response: Response): Promise<any> => {
+    try {
+        return await response.json()
     } catch (error) {
         throw new Error("Invalid JSON response from server")
     }
+}
 
+const extractDataFromResponse = <T>(apiResponse: any): T => {
     // Handle different response structures
     if (apiResponse.data !== undefined) {
         // Check if data has an 'items' property (for paginated responses)
         if (apiResponse.data && typeof apiResponse.data === 'object' && 'items' in apiResponse.data) {
             return (apiResponse.data as any).items
         }
-        // Return the data directly
         return apiResponse.data
-    } else if (Array.isArray(apiResponse)) {
-        // Direct array response
-        return apiResponse as unknown as T
-    } else {
-        // If no data property, return the whole response
+    }
+    
+    if (Array.isArray(apiResponse)) {
         return apiResponse as unknown as T
     }
+    
+    return apiResponse as unknown as T
 }
 
 // Helper function to get current user ID

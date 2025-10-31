@@ -25,71 +25,36 @@ import {
 } from "lucide-react"
 
 // Status configurations
+const createStatusConfig = (label: string, icon: any, color: string) => ({
+  label,
+  icon,
+  color,
+  bgColor: `${color.replace('text-', 'bg-')}/10`,
+  borderColor: `${color.replace('text-', 'border-')}/20`
+})
+
 export const STATUS_CONFIG = {
-  pending: {
-    label: "Pending",
-    icon: Circle,
-    color: "text-gray-500",
-    bgColor: "bg-gray-500/10",
-    borderColor: "border-gray-500/20"
-  },
-  in_progress: {
-    label: "In Progress",
-    icon: Clock,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-    borderColor: "border-blue-500/20"
-  },
-  completed: {
-    label: "Completed",
-    icon: CheckCircle,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/20"
-  },
-  cancelled: {
-    label: "Cancelled",
-    icon: AlertTriangle,
-    color: "text-red-500",
-    bgColor: "bg-red-500/10",
-    borderColor: "border-red-500/20"
-  }
+  pending: createStatusConfig("Pending", Circle, "text-gray-500"),
+  in_progress: createStatusConfig("In Progress", Clock, "text-blue-500"),
+  completed: createStatusConfig("Completed", CheckCircle, "text-green-500"),
+  cancelled: createStatusConfig("Cancelled", AlertTriangle, "text-red-500")
 }
 
 // Priority configurations
+const createPriorityConfig = (label: string, icon: any, color: string, order: number) => ({
+  label,
+  icon,
+  color,
+  bgColor: `${color.replace('text-', 'bg-')}/10`,
+  borderColor: `${color.replace('text-', 'border-')}/20`,
+  order
+})
+
 export const PRIORITY_CONFIG = {
-  urgent: {
-    label: "Urgent",
-    icon: AlertTriangle,
-    color: "text-red-500",
-    bgColor: "bg-red-500/10",
-    borderColor: "border-red-500/20",
-    order: 1
-  },
-  high: {
-    label: "High",
-    icon: Flag,
-    color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
-    borderColor: "border-orange-500/20",
-    order: 2
-  },
-  medium: {
-    label: "Medium",
-    icon: Target,
-    color: "text-yellow-500",
-    bgColor: "bg-yellow-500/10",
-    borderColor: "border-yellow-500/20",
-    order: 3
-  },
-  low: {
-    label: "Low",
-    icon: Circle,
-    color: "text-gray-500",
-    bgColor: "bg-gray-500/10",
-    borderColor: "border-gray-500/20",
-    order: 4
-  }
+  urgent: createPriorityConfig("Urgent", AlertTriangle, "text-red-500", 1),
+  high: createPriorityConfig("High", Flag, "text-orange-500", 2),
+  medium: createPriorityConfig("Medium", Target, "text-yellow-500", 3),
+  low: createPriorityConfig("Low", Circle, "text-gray-500", 4)
 }
 
 // Category configurations
